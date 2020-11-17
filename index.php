@@ -13,14 +13,19 @@ $getDate = new class {
 $date = $getDate->nowD();
 
 if (isset($_GET['print']) && isset($_GET['public'])) {
-  header('Access-Control-Allow-Origin: *');
+   header('Access-Control-Allow-Origin: *');
     header('Content-Type: text/plain; charset=utf-8');
     header('Access-Control-Allow-Methods: GET, POST, DELETE');
     echo file_get_contents(basename(__FILE__));
 } else if (isset($_GET['print'])) {
     header('Content-type: text/plain; charset=utf-8');
     echo file_get_contents(basename(__FILE__));
-} else {
+} else if (isset($_GET['public'])) {
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Access-Control-Allow-Methods: GET, POST, DELETE');
+    echo file_get_contents(basename(__FILE__));
+}else {
     echo "<h1>" . $getDate->nowD() . "</h1>";
 }
 ?>
