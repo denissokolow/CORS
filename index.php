@@ -1,30 +1,27 @@
 <?php
-date_default_timezone_set('Europe/Moscow');
-
-$getDate = new class {
-    function __construct($dateform = 'j/m/y H:i') {
-        $this->dateform = $dateform;
-    }
-    function nowD() {
-        return date($this->dateform);
-    }
-};
-
-$date = $getDate->nowD();
-
-if (isset($_GET['print']) && isset($_GET['public'])) {
-   header('Access-Control-Allow-Origin: *');
-    header('Content-Type: text/plain; charset=utf-8');
-    header('Access-Control-Allow-Methods: GET, POST, DELETE');
-    echo file_get_contents(basename(__FILE__));
-} else if (isset($_GET['print'])) {
+  $router->get('/', function () use ($router) {
+    date_default_timezone_set('Europe/Moscow');
+      $getDate = new class { function __construct($format = 'j/m/y H:i') {
+        $this->format = $format;
+      }
+      function getD() {
+        return date($this->format);
+      }
+    };
+      
+    $date = $getDate->getD();
+      
+    echo $date;
+      
+  });
+  $router->get('/print', function () use ($router) {
     header('Content-type: text/plain; charset=utf-8');
-    echo file_get_contents(basename(__FILE__));
-} else if (isset($_GET['public'])) {
+    echo file_get_contents(__FILE__);
+  });
+    $router->get('/print&public', function () use ($router) {
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: text/plain; charset=utf-8');
     header('Access-Control-Allow-Methods: GET, POST, DELETE');
-}else {
-    echo "<h1>" . $getDate->nowD() . "</h1>";
-}
-?>
+    header('Content-type: text/plain; charset=utf-8');
+    echo file_get_contents(__FILE__);
+  });
